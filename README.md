@@ -2,7 +2,7 @@
 
 A Foundry VTT module for running the **Five Banners Burning** campaign frame in [Daggerheart](https://www.daggerheart.com). The GM creates the factions of the campaign and their relationships, and hands each faction to the characters as they meet it. Every character sheet gets a **Factions** tab that shows the factions the character knows, how those factions feel about each other and, with the homebrew reputation rule, where the character stands with each of them. The module also puts every sheet and token ring in the Five Banners Burning style of the Daggerheart Core Rulebook module.
 
-![The Factions tab on a character sheet](docs/screenshots/01-factions-tab.webp)
+![The Factions tab on a character sheet, showing the five nations of Althas with reputation tracks and relationships](docs/screenshots/01-factions-tab.webp)
 
 ## Requirements
 
