@@ -1,0 +1,26 @@
+<div class="dh5b-track tone-{{track.tone}} {{#if track.canMark}}can-mark{{/if}}" style="--dh5b-per: {{track.per}}">
+    <div class="dh5b-track-head">
+        <span class="dh5b-rank-value">{{track.rankSigned}}</span>
+        <span class="dh5b-rank-label">{{track.rankLabel}}</span>
+        {{#if track.progress}}<span class="dh5b-rank-progress">{{track.progress}}</span>{{/if}}
+    </div>
+    <div class="dh5b-track-bar">
+        {{#if track.canMark}}
+            <button type="button" class="dh5b-step" data-action="dh5bStep" data-delta="-1" data-tooltip="DH5B.Reputation.MarkNegative"><i class="fa-solid fa-minus" inert></i></button>
+        {{/if}}
+        <div class="dh5b-pips neg">
+            {{#each track.negPips as |pip|}}
+                <span class="dh5b-pip {{#if pip.filled}}filled{{/if}} {{#if pip.stepEnd}}step{{/if}}" {{#if ../track.canMark}}data-action="dh5bMark"{{/if}} data-value="{{pip.value}}" {{#if pip.label}}data-tooltip-text="{{pip.label}}"{{/if}}></span>
+            {{/each}}
+        </div>
+        <span class="dh5b-pip-center" data-tooltip="DH5B.Rating.neutral" {{#if track.canMark}}data-action="dh5bMark" data-value="0"{{/if}}><i class="fa-solid fa-flag" inert></i></span>
+        <div class="dh5b-pips pos">
+            {{#each track.posPips as |pip|}}
+                <span class="dh5b-pip {{#if pip.filled}}filled{{/if}} {{#if pip.stepEnd}}step{{/if}}" {{#if ../track.canMark}}data-action="dh5bMark"{{/if}} data-value="{{pip.value}}" {{#if pip.label}}data-tooltip-text="{{pip.label}}"{{/if}}></span>
+            {{/each}}
+        </div>
+        {{#if track.canMark}}
+            <button type="button" class="dh5b-step" data-action="dh5bStep" data-delta="1" data-tooltip="DH5B.Reputation.MarkPositive"><i class="fa-solid fa-plus" inert></i></button>
+        {{/if}}
+    </div>
+</div>

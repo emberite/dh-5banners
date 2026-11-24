@@ -1,0 +1,28 @@
+<section class="tab {{tab.cssClass}}" data-tab="overview" data-group="primary">
+    <fieldset class="dh5b-section">
+        <legend>{{localize 'DH5B.Sheet.Description'}}</legend>
+        {{#if editable}}
+            {{formInput fields.description value=system.description enriched=enriched.description toggled=true}}
+        {{else}}
+            <div class="dh5b-prose">{{{enriched.description}}}</div>
+        {{/if}}
+    </fieldset>
+    <div class="dh5b-two-col">
+        <fieldset class="dh5b-section">
+            <legend><i class="fa-solid fa-gem" inert></i> {{localize 'DH5B.Sheet.Assets'}}</legend>
+            {{#if editable}}
+                {{formInput fields.assets value=system.assets enriched=enriched.assets toggled=true}}
+            {{else}}
+                <div class="dh5b-prose">{{{enriched.assets}}}</div>
+            {{/if}}
+        </fieldset>
+        <fieldset class="dh5b-section">
+            <legend><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'DH5B.Sheet.Problems'}}</legend>
+            {{#if editable}}
+                {{formInput fields.problems value=system.problems enriched=enriched.problems toggled=true}}
+            {{else}}
+                <div class="dh5b-prose">{{{enriched.problems}}}</div>
+            {{/if}}
+        </fieldset>
+    </div>
+</section>

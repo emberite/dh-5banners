@@ -1,0 +1,162 @@
+{
+  "TYPES": {
+    "Item": {
+      "dh-5banners": {
+        "faction": "Faction"
+      }
+    }
+  },
+  "DH5B": {
+    "Tab": {
+      "Label": "Factions",
+      "OpenFaction": "Open the faction",
+      "Expand": "Show details and notes",
+      "Collapse": "Hide details",
+      "Forget": "Remove from this character",
+      "ForgetConfirm": "Remove <strong>{faction}</strong> from {actor}'s Factions tab? Their reputation with it is lost.",
+      "Notes": "Your notes",
+      "NotesPlaceholder": "Contacts, favors owed, grudges…",
+      "Empty": "No factions encountered yet.",
+      "EmptyGM": "Drag a faction from the Items sidebar onto this sheet (or onto the party sheet) when the characters meet it."
+    },
+    "Rating": {
+      "nemeses": "Nemeses",
+      "enemies": "Enemies",
+      "unfriendly": "Unfriendly",
+      "neutral": "Neutral",
+      "friendly": "Friendly",
+      "allies": "Allies",
+      "closeAllies": "Close Allies"
+    },
+    "Relations": {
+      "Title": "Relationships",
+      "Hint": "How this faction stands with others, from Nemeses (−3) to Close Allies (+3). The more intense the relationship, the more the faction will act for or against the other, even at risk to itself.",
+      "MirrorHint": "Changes are mirrored on the other faction.",
+      "NotePlaceholder": "Why? (old grudge, trade pact…)",
+      "Remove": "Remove relationship",
+      "Add": "Add a relationship…",
+      "DropHint": "or drop a faction here",
+      "None": "No relationships yet.",
+      "UnknownHint": "not yet met by this character"
+    },
+    "Reputation": {
+      "Progress": "{into} of {per} toward {next}",
+      "MarkPositive": "Mark positive reputation",
+      "MarkNegative": "Mark negative reputation",
+      "Footer": "Reputation shifts with every deed done for or against a faction.",
+      "RuleLink": "Reputation rule"
+    },
+    "Rule": {
+      "Title": "Reputation (Homebrew)",
+      "Intro": "Each character has a reputation with every faction they have encountered. It uses the same scale as the relationships between factions, from Nemeses (−3) to Close Allies (+3), and every character starts at Neutral.",
+      "Marks": "When a character does something the faction would hear about, the GM marks reputation: a positive mark for deeds that help the faction or its people, a negative mark for deeds that harm or shame it. Every {per} marks in one direction shift the rating one step. Marks in the other direction erase marks first, so a reputation can climb back from the brink.",
+      "MarksOne": "When a character does something the faction would hear about, the GM shifts their rating one step up for deeds that help the faction or its people, or one step down for deeds that harm or shame it.",
+      "Standing": "Standing",
+      "Shifts": "Big deeds (saving a leader, exposing a spy, burning a temple) can be worth several marks at once. The faction's allies and enemies may react too: consider a mark with factions that are Allies or Nemeses of the one affected.",
+      "Close": "Close",
+      "Effect": {
+        "Title": "At the table",
+        "closeAllies": "The faction takes real risks for you. Once per session, call on it for significant aid. Advantage on rolls to influence its members.",
+        "allies": "Members help even at some cost to themselves. Advantage on rolls to influence its members.",
+        "friendly": "Members render help that doesn't need much effort or risk.",
+        "neutral": "You're one face among many.",
+        "unfriendly": "Members are unhelpful; even small favors come at a price.",
+        "enemies": "Members hinder you. Disadvantage on rolls to influence them.",
+        "nemeses": "The faction goes out on a limb to see you suffer. Disadvantage on rolls to influence its members, and the GM may make a move against you when you're recognized."
+      }
+    },
+    "Sheet": {
+      "Label": "Five Banners Faction",
+      "Name": "Faction name",
+      "Kind": "Kind of faction",
+      "KindPlaceholder": "Nation, guild, cult, order…",
+      "MottoPlaceholder": "Motto or creed",
+      "Color": "Banner color",
+      "ChangeBanner": "Change the banner image",
+      "Description": "Description",
+      "Assets": "Assets",
+      "Problems": "Problems",
+      "GMNotes": "GM Notes",
+      "KnownBy": "Known by",
+      "KnownByHint": "Characters who have met this faction and their reputation with it. Drop a character or the party here to introduce them.",
+      "KnownByHintPlayer": "Your characters' reputation with this faction.",
+      "KnownByNone": "No character has met this faction yet.",
+      "IntroduceAll": "Introduce to all player characters",
+      "Tabs": {
+        "overview": "Overview",
+        "relations": "Relationships",
+        "objectives": "Objectives",
+        "reputation": "Reputation",
+        "notes": "GM Notes"
+      }
+    },
+    "Objectives": {
+      "Title": "Objective Countdowns",
+      "Hint": "Each in-game week, advance one countdown per faction. Major objectives take 10 steps, minor ones 4 to 6. A faction can pursue one major and up to two minor objectives at a time.",
+      "major": "Major",
+      "minor": "Minor",
+      "NamePlaceholder": "What is the faction after?",
+      "Steps": "Steps",
+      "Remaining": "Ticks remaining",
+      "TickDown": "Advance the countdown",
+      "TickUp": "Set the countdown back",
+      "Secret": "Hidden from players (click to reveal)",
+      "Public": "Visible to players (click to hide)",
+      "Remove": "Remove objective",
+      "AddMajor": "Major objective",
+      "AddMinor": "Minor objective",
+      "None": "No objectives yet.",
+      "Completed": "{faction} completed an objective: {name}"
+    },
+    "Althas": {
+      "Folder": "Five Banners",
+      "Federation": "Federation of city-states",
+      "Theocracy": "Theocracy",
+      "Republic": "Republic",
+      "Magocracy": "Magocracy",
+      "Monarchy": "Monarchy",
+      "Created": "Created {count} nations of Althas in the Five Banners folder."
+    },
+    "Menu": {
+      "Legend": "Five Banners",
+      "NewFaction": "New Faction",
+      "NewFactionName": "New Faction",
+      "Althas": "Create the Five Nations"
+    },
+    "Ring": {
+      "Label": "Five Banners Burning (Core Rulebook)"
+    },
+    "Notify": {
+      "GMOnly": "Only the GM can introduce characters to a faction.",
+      "Introduced": "{names} met {faction}.",
+      "AlreadyKnown": "They already know {faction}.",
+      "RingMissing": "Five Banners: the installed Daggerheart Core Rulebook module has no Five Banners Burning token ring art. Update that module, or turn off the token ring option."
+    },
+    "Settings": {
+      "SheetTheme": {
+        "Name": "Five Banners Burning sheet theme",
+        "Hint": "Show every sheet that supports the Core Rulebook themes in the Five Banners Burning theme, whatever theme each user picked. Turning this off (or disabling the module) brings back everyone's own choice."
+      },
+      "TokenRing": {
+        "Name": "Five Banners Burning token ring",
+        "Hint": "Use the Core Rulebook module's Five Banners Burning dynamic token ring instead of the ring picked in Foundry's settings."
+      },
+      "Reputation": {
+        "Name": "Reputation (homebrew)",
+        "Hint": "Track each character's reputation with the factions they've met, on the Factions tab."
+      },
+      "MarksPerRank": {
+        "Name": "Reputation marks per step",
+        "Hint": "How many marks shift a reputation one step on the Nemeses to Close Allies scale. Set to 1 to move the rating directly."
+      },
+      "PlayersMark": {
+        "Name": "Players can mark reputation",
+        "Hint": "Let players change the reputation of characters they own. Otherwise only the GM can."
+      },
+      "Mirror": {
+        "Name": "Mirror faction relationships",
+        "Hint": "When you set how one faction feels about another, set the same rating the other way around."
+      }
+    }
+  }
+}

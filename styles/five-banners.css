@@ -1,0 +1,402 @@
+/* ==========================================================================
+   Five Banners: Factions & Reputation
+   Styled after the Daggerheart Core Rulebook module's "dh-c-style" sheets in
+   the Five Banners Burning theme: ember accents, gold secondary, wireframe
+   frame, cut-corner buttons and the campaign frame's cover art.
+   ========================================================================== */
+
+/* ---------- tokens ---------- */
+.dh5b,
+.dh5b-factions-tab,
+.dh5b-menu {
+  --dh5b-white: var(--dh-c-white, #f5f3f0);
+  --dh5b-black: var(--dh-c-black, #0f0e0a);
+  --dh5b-accent: var(--dh-c-accent, #cb5b1a);
+  --dh5b-deep: var(--dh-c-deep-accent, #221816);
+  --dh5b-bright: var(--dh-c-bright-accent, #f28322);
+  --dh5b-gold: var(--dh-c-secondary, #fcd873);
+  --dh5b-sections: var(--dh-c-sections-background, #3d372980);
+  --dh5b-text: var(--dh5b-white);
+  --dh5b-dim: hsl(from var(--dh5b-white) h s l / 0.62);
+  --dh5b-line: hsl(from var(--dh5b-accent) h s l / 0.55);
+  --dh5b-line-soft: hsl(from var(--dh5b-accent) h s l / 0.25);
+  --dh5b-pos: var(--dh5b-gold);
+  --dh5b-neg: #e2524f;
+  --dh5b-font-title: 'Cinzel', var(--dh-c-font-title, 'Lexend'), serif;
+  --dh5b-font-label: var(--dh-c-font-title, 'Lexend'), 'Signika', sans-serif;
+}
+
+/* The faction sheet and the rule dialog always wear Five Banners Burning. */
+.application.dh5b {
+  --dh-c-accent: #cb5b1a;
+  --dh-c-deep-accent: #221816;
+  --dh-c-bright-accent: #f28322;
+  --dh-c-secondary: #fcd873;
+  --dh-c-sections-background: #3d372980;
+  --dh5b-cover: url(../../daggerheart-core/assets/art/frame-244-fivebanners-intro-transparent.webp);
+  background: radial-gradient(circle at 50% 20%, #0b0c0e, #0d0d0d) no-repeat;
+  color: var(--dh5b-text);
+  font-family: var(--dh-c-font-body, 'Montserrat'), 'Signika', sans-serif;
+  border-radius: 0;
+  box-sizing: border-box;
+  border: 2px solid var(--dh5b-accent);
+  border-image: url(../../daggerheart-core/assets/layout/wireframe.png) 30 / 25px / 5px;
+}
+.application.dh5b::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 45%;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--dh5b-cover) no-repeat center -64px / cover;
+  opacity: 0.45;
+  mix-blend-mode: plus-lighter;
+  mask-image: linear-gradient(5deg, #0000 25%, #000);
+}
+.application.dh5b .window-header { background: transparent; border-bottom: 1px solid var(--dh5b-line-soft); color: var(--dh5b-text); }
+.application.dh5b .window-content { background: transparent; color: var(--dh5b-text); padding: 0.75rem 1rem 1rem; gap: 0.6rem; }
+.application.dh5b-faction-sheet .window-content { overflow: hidden; display: flex; flex-direction: column; }
+.application.dh5b-faction-sheet .window-content > .tab { flex: 1; min-height: 0; overflow-y: auto; padding-right: 0.25rem; }
+
+/* ---------- shared pieces ---------- */
+.dh5b .dh5b-hint,
+.dh5b-factions-tab .dh5b-hint { color: var(--dh5b-dim); font-size: var(--font-size-12, 0.78rem); margin: 0.2rem 0 0.6rem; }
+.dh5b .dh5b-hint.center { text-align: center; }
+.dh5b .dh5b-hint a,
+.dh5b-factions-tab a { color: var(--dh5b-gold); }
+.dh5b .dh5b-empty,
+.dh5b-factions-tab .dh5b-empty { list-style: none; text-align: center; color: var(--dh5b-dim); font-style: italic; padding: 1rem; }
+.dh5b .dh5b-empty.small { padding: 0.5rem; }
+
+.dh5b .dh5b-section {
+  position: relative;
+  margin: 0 0 0.8rem;
+  padding: 0.6rem 0.8rem 0.8rem;
+  border: 1px solid var(--dh5b-line-soft);
+  border-radius: 0;
+  background: linear-gradient(to top, transparent, var(--dh5b-sections));
+  box-shadow: inset 0 0 45px hsl(from var(--dh5b-accent) h s l / 0.2), 0 0 5px hsl(from var(--dh5b-accent) h s l / 0.2);
+}
+.dh5b .dh5b-section > legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 1em;
+  padding: 0 2em;
+  font-family: var(--dh5b-font-label);
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(from var(--dh5b-accent) h s calc(l + 15));
+  border: 1px solid var(--dh5b-accent);
+  border-width: 1px 1px 1px 0;
+  border-image: linear-gradient(140deg, transparent 20px, var(--dh5b-accent), transparent 90%) 20;
+  background: linear-gradient(90deg, #0000, #202527 2em);
+}
+.dh5b .dh5b-section > legend > i { color: var(--dh5b-gold); }
+
+.dh5b input[type='text'],
+.dh5b input[type='number'],
+.dh5b select,
+.dh5b-factions-tab textarea {
+  background: hsl(from var(--dh5b-deep) h s l / 0.75);
+  border: 1px solid var(--dh5b-line-soft);
+  color: var(--dh5b-text);
+  border-radius: 3px;
+}
+.dh5b input:focus,
+.dh5b select:focus,
+.dh5b-factions-tab textarea:focus { border-color: var(--dh5b-bright); box-shadow: 0 0 6px hsl(from var(--dh5b-bright) h s l / 0.4); outline: none; }
+
+.dh5b .dh5b-add-row button,
+.dh5b-dialog .form-footer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: auto;
+  height: auto;
+  padding: 0.35rem 0.9rem;
+  font-family: var(--dh5b-font-label);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dh5b-text);
+  background: linear-gradient(120deg, hsl(from var(--dh5b-accent) h s calc(l - 30)), hsl(from var(--dh5b-accent) h s calc(l - 12)));
+  border: 1px solid var(--dh5b-accent);
+  border-radius: 0;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.dh5b .dh5b-add-row button:hover:not(:disabled),
+.dh5b-dialog .form-footer button:hover { background: linear-gradient(120deg, hsl(from var(--dh5b-accent) h s calc(l - 15)), var(--dh5b-accent)); color: var(--dh5b-white); }
+.dh5b .dh5b-add-row button:disabled { opacity: 0.4; }
+.dh5b .dh5b-icon { color: var(--dh5b-dim); cursor: pointer; padding: 0 0.2rem; }
+.dh5b .dh5b-icon:hover { color: var(--dh5b-gold); text-shadow: 0 0 6px var(--dh5b-bright); }
+.dh5b .dh5b-add-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.6rem; }
+.dh5b .dh5b-add-row select { flex: 0 1 16rem; }
+.dh5b .dh5b-add-row .dh5b-hint { margin: 0; }
+
+/* Banner images: the Core Rulebook's nation banners are black line art on transparency, so every banner sits on its faction's color. */
+.dh5b-banner,
+.dh5b-card-banner {
+  --dh5b-faction-color-safe: var(--dh5b-faction-color, var(--dh5b-accent));
+  background:
+    radial-gradient(circle at 50% 30%, hsl(from var(--dh5b-faction-color-safe) h s calc(l + 25)), var(--dh5b-faction-color-safe) 70%),
+    var(--dh5b-faction-color-safe);
+  border: 1px solid var(--dh5b-gold);
+  box-shadow: 0 0 0 3px hsl(from var(--dh5b-deep) h s l / 0.9), 0 0 14px hsl(from var(--dh5b-faction-color-safe) h s l / 0.6);
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
+  overflow: hidden;
+}
+.dh5b-banner img,
+.dh5b-card-banner img { width: 100%; height: 100%; object-fit: contain; border: none; }
+
+/* ---------- faction sheet: header ---------- */
+.dh5b .dh5b-sheet-header { display: flex; gap: 1rem; align-items: flex-start; }
+.dh5b .dh5b-banner { flex: 0 0 96px; height: 132px; }
+.dh5b .dh5b-banner.editable { cursor: pointer; }
+.dh5b .dh5b-banner.editable:hover { filter: brightness(1.15); }
+.dh5b .dh5b-identity { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; padding-top: 0.25rem; }
+.dh5b .dh5b-name {
+  margin: 0;
+  height: auto;
+  font-family: var(--dh5b-font-title);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dh5b-gold);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--dh5b-line-soft);
+  text-shadow: 0 0 12px hsl(from var(--dh5b-bright) h s l / 0.45);
+}
+.dh5b input.dh5b-name { padding: 0 0.2rem; }
+.dh5b .dh5b-identity-row { display: flex; gap: 0.5rem; align-items: center; }
+.dh5b .dh5b-identity-row > input { flex: 1; }
+.dh5b .dh5b-color { display: flex; align-items: center; flex: 0 0 auto; }
+.dh5b .dh5b-color color-picker { width: 7.5rem; }
+.dh5b .dh5b-kind { font-family: var(--dh5b-font-label); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dh5b-bright); }
+.dh5b .dh5b-motto,
+.dh5b .dh5b-motto-input { font-style: italic; color: var(--dh5b-dim); margin: 0; }
+
+/* ---------- faction sheet: tabs ---------- */
+.dh5b nav.sheet-tabs {
+  border: none;
+  border-top: 1px solid var(--dh5b-line-soft);
+  border-bottom: 1px solid var(--dh5b-line-soft);
+  gap: 0.25rem;
+  justify-content: center;
+}
+.dh5b nav.sheet-tabs > a {
+  font-family: var(--dh5b-font-label);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dh5b-dim);
+  padding: 0.35rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+.dh5b nav.sheet-tabs > a:hover { color: var(--dh5b-text); text-shadow: none; }
+.dh5b nav.sheet-tabs > a.active { color: var(--dh5b-gold); border-bottom: 2px solid var(--dh5b-accent); text-shadow: 0 0 8px hsl(from var(--dh5b-bright) h s l / 0.5); }
+
+.dh5b .dh5b-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.dh5b prose-mirror { min-height: 5rem; }
+.dh5b prose-mirror .editor-content { color: var(--dh5b-text); }
+.dh5b .dh5b-prose { min-height: 1.5rem; }
+
+/* ---------- faction sheet: relationships ---------- */
+.dh5b .dh5b-relation-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.dh5b .dh5b-relation-row {
+  display: grid;
+  grid-template-columns: 34px minmax(6rem, 1fr) 10rem minmax(6rem, 1.3fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.4rem;
+  border-left: 3px solid var(--dh5b-line-soft);
+  background: hsl(from var(--dh5b-deep) h s l / 0.5);
+}
+.dh5b .dh5b-relation-row.tone-pos { border-left-color: var(--dh5b-pos); }
+.dh5b .dh5b-relation-row.tone-neg { border-left-color: var(--dh5b-neg); }
+.dh5b .dh5b-relation-row.unknown { opacity: 0.55; }
+.dh5b .dh5b-relation-row img { width: 34px; height: 34px; object-fit: contain; border: none; background: radial-gradient(circle, hsl(from var(--dh5b-chip-color, var(--dh5b-gold)) h s calc(l + 20)), var(--dh5b-chip-color, var(--dh5b-gold))); border-radius: 50%; cursor: pointer; }
+.dh5b .dh5b-relation-name { font-family: var(--dh5b-font-title); font-weight: 700; font-size: 1.05rem; color: var(--dh5b-text); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dh5b .dh5b-relation-badge { font-family: var(--dh5b-font-label); font-size: 0.8rem; text-transform: uppercase; }
+.dh5b .tone-pos .dh5b-relation-badge { color: var(--dh5b-pos); }
+.dh5b .tone-neg .dh5b-relation-badge { color: var(--dh5b-neg); }
+.dh5b .dh5b-relation-note { color: var(--dh5b-dim); font-style: italic; font-size: 0.85rem; }
+.dh5b .dh5b-scale { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem; font-size: 0.7rem; color: var(--dh5b-dim); padding: 0 0.3rem; }
+
+/* ---------- faction sheet: objectives ---------- */
+.dh5b .dh5b-objectives { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.dh5b .dh5b-objective { padding: 0.45rem 0.6rem; background: hsl(from var(--dh5b-deep) h s l / 0.55); border: 1px solid var(--dh5b-line-soft); }
+.dh5b .dh5b-objective.major { border-color: var(--dh5b-line); box-shadow: inset 0 0 18px hsl(from var(--dh5b-accent) h s l / 0.25); }
+.dh5b .dh5b-objective.done { border-color: var(--dh5b-gold); box-shadow: 0 0 10px hsl(from var(--dh5b-gold) h s l / 0.4); }
+.dh5b .dh5b-objective.secret .dh5b-objective-kind::after { content: ' \f070'; font-family: 'Font Awesome 6 Pro'; font-weight: 900; opacity: 0.6; }
+.dh5b .dh5b-objective-head { display: flex; align-items: center; gap: 0.5rem; }
+.dh5b .dh5b-objective-head > input[type='text'] { flex: 1; }
+.dh5b .dh5b-objective-kind { flex: 0 0 4.2rem; font-family: var(--dh5b-font-label); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dh5b-bright); }
+.dh5b .dh5b-objective-name { flex: 1; font-weight: 600; }
+.dh5b .dh5b-steps input { width: 3.2rem; text-align: center; }
+.dh5b .dh5b-countdown { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+.dh5b .dh5b-countdown-pips { flex: 1; display: flex; gap: 4px; }
+.dh5b .dh5b-cd-pip { flex: 1; max-width: 2.2rem; height: 0.7rem; background: hsl(from var(--dh5b-deep) h s l / 0.9); border: 1px solid var(--dh5b-line); transform: skewX(-20deg); }
+.dh5b .dh5b-cd-pip.filled { background: linear-gradient(90deg, var(--dh5b-accent), var(--dh5b-bright)); border-color: var(--dh5b-bright); box-shadow: 0 0 6px hsl(from var(--dh5b-bright) h s l / 0.6); }
+.dh5b .done .dh5b-cd-pip.filled { background: var(--dh5b-gold); border-color: var(--dh5b-gold); }
+.dh5b .dh5b-countdown-value { font-family: var(--dh5b-font-title); font-size: 1.3rem; font-weight: 700; color: var(--dh5b-gold); min-width: 1.6rem; text-align: center; }
+.dh5b .dh5b-icon.advance { color: var(--dh5b-bright); font-size: 1.05rem; }
+
+/* ---------- faction sheet: known by ---------- */
+.dh5b .dh5b-known-by { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+.dh5b .dh5b-known { display: grid; grid-template-columns: 40px 9rem 1fr; align-items: center; gap: 0.6rem; padding: 0.3rem 0.5rem; background: hsl(from var(--dh5b-deep) h s l / 0.5); }
+.dh5b .dh5b-known img { width: 40px; height: 40px; object-fit: cover; object-position: top; border: 1px solid var(--dh5b-gold); border-radius: 50%; cursor: pointer; }
+.dh5b .dh5b-known-name { font-family: var(--dh5b-font-title); font-weight: 700; color: var(--dh5b-text); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- reputation track (character tab + faction sheet) ---------- */
+.dh5b-track { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.dh5b-track-head { display: flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }
+.dh5b-track .dh5b-rank-value { font-family: var(--dh5b-font-title); font-weight: 700; font-size: 1.15rem; min-width: 1.4rem; color: var(--dh5b-dim); }
+.dh5b-track .dh5b-rank-label { font-family: var(--dh5b-font-label); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dh5b-dim); }
+.dh5b-track.tone-pos .dh5b-rank-value,
+.dh5b-track.tone-pos .dh5b-rank-label { color: var(--dh5b-pos); text-shadow: 0 0 8px hsl(from var(--dh5b-pos) h s l / 0.4); }
+.dh5b-track.tone-neg .dh5b-rank-value,
+.dh5b-track.tone-neg .dh5b-rank-label { color: var(--dh5b-neg); text-shadow: 0 0 8px hsl(from var(--dh5b-neg) h s l / 0.4); }
+.dh5b-track .dh5b-rank-progress { font-size: 0.72rem; color: var(--dh5b-dim); font-style: italic; }
+.dh5b-track-bar { display: flex; align-items: center; gap: 4px; }
+.dh5b-pips { flex: 1; display: flex; gap: 3px; min-width: 0; }
+.dh5b-pips.neg { justify-content: flex-end; }
+.dh5b-pip {
+  flex: 1 1 0;
+  max-width: 1.6rem;
+  height: 0.8rem;
+  border: 1px solid hsl(from var(--dh5b-white) h s l / 0.25);
+  background: hsl(from var(--dh5b-deep) h s l / 0.85);
+  transform: skewX(-20deg);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.dh5b-pips.neg .dh5b-pip { transform: skewX(20deg); }
+.dh5b-pips.pos .dh5b-pip.step { margin-right: 4px; }
+.dh5b-pips.neg .dh5b-pip.step { margin-left: 4px; }
+.dh5b-pip.step { border-color: hsl(from var(--dh5b-white) h s l / 0.55); }
+.dh5b-pips.pos .dh5b-pip.filled { background: linear-gradient(90deg, hsl(from var(--dh5b-pos) h s calc(l - 20)), var(--dh5b-pos)); border-color: var(--dh5b-pos); box-shadow: 0 0 6px hsl(from var(--dh5b-pos) h s l / 0.55); }
+.dh5b-pips.neg .dh5b-pip.filled { background: linear-gradient(270deg, hsl(from var(--dh5b-neg) h s calc(l - 20)), var(--dh5b-neg)); border-color: var(--dh5b-neg); box-shadow: 0 0 6px hsl(from var(--dh5b-neg) h s l / 0.55); }
+.dh5b-pip-center {
+  flex: 0 0 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  color: var(--dh5b-gold);
+  border: 1px solid var(--dh5b-gold);
+  background: var(--dh5b-deep);
+  rotate: 45deg;
+}
+.dh5b-pip-center > i { rotate: -45deg; }
+.dh5b-track.can-mark .dh5b-pip,
+.dh5b-track.can-mark .dh5b-pip-center { cursor: pointer; }
+.dh5b-track.can-mark .dh5b-pip:hover { border-color: var(--dh5b-bright); box-shadow: 0 0 6px var(--dh5b-bright); }
+.dh5b-track .dh5b-step {
+  flex: 0 0 1.4rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  font-size: 0.65rem;
+  color: var(--dh5b-dim);
+  background: transparent;
+  border: 1px solid var(--dh5b-line-soft);
+  border-image: none;
+  border-radius: 50%;
+}
+.dh5b-track .dh5b-step:hover { color: var(--dh5b-gold); border-color: var(--dh5b-gold); box-shadow: none; background: transparent; }
+
+/* ---------- relationship chips ---------- */
+.dh5b-relation-list { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.dh5b-relation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.1rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--dh5b-line-soft);
+  border-radius: 1rem;
+  background: hsl(from var(--dh5b-deep) h s l / 0.7);
+  cursor: pointer;
+}
+.dh5b-relation img { width: 1.3rem; height: 1.3rem; object-fit: contain; border: none; border-radius: 50%; background: radial-gradient(circle, hsl(from var(--dh5b-chip-color, var(--dh5b-gold)) h s calc(l + 20)), var(--dh5b-chip-color, var(--dh5b-gold))); }
+.dh5b-relation-value { font-weight: 700; }
+.dh5b-relation.tone-pos { border-color: hsl(from var(--dh5b-pos) h s l / 0.6); }
+.dh5b-relation.tone-pos .dh5b-relation-value { color: var(--dh5b-pos); }
+.dh5b-relation.tone-neg { border-color: hsl(from var(--dh5b-neg) h s l / 0.6); }
+.dh5b-relation.tone-neg .dh5b-relation-value { color: var(--dh5b-neg); }
+.dh5b-relation.unknown { opacity: 0.45; border-style: dashed; }
+
+/* ---------- character sheet: Factions tab ---------- */
+.dh5b-factions-tab.active { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.dh5b-factions-tab .dh5b-factions-list { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0.75rem 0.75rem; }
+.dh5b-faction-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  color: var(--dh5b-text);
+  background: linear-gradient(100deg, hsl(from var(--dh5b-faction-color, var(--dh5b-accent)) h s l / 0.22), transparent 45%), linear-gradient(to top, transparent, var(--dh5b-sections));
+  border: 1px solid var(--dh5b-line-soft);
+  border-left: 3px solid var(--dh5b-faction-color, var(--dh5b-accent));
+  box-shadow: inset 0 0 35px hsl(from var(--dh5b-accent) h s l / 0.15), 0 0 5px hsl(from var(--dh5b-accent) h s l / 0.2);
+  transition: background 0.6s;
+}
+.dh5b-faction-card:hover { background: linear-gradient(100deg, hsl(from var(--dh5b-faction-color, var(--dh5b-accent)) h s l / 0.3), transparent 50%), var(--dh5b-sections); }
+.dh5b-faction-card .dh5b-card-banner { width: 72px; height: 98px; cursor: pointer; }
+.dh5b-card-body { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
+.dh5b-card-header { display: flex; align-items: flex-start; gap: 0.5rem; }
+.dh5b-card-title { flex: 1; display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; min-width: 0; }
+.dh5b-card-title h3 {
+  margin: 0;
+  border: none;
+  font-family: var(--dh5b-font-title);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dh5b-gold);
+  text-shadow: 0 0 10px hsl(from var(--dh5b-bright) h s l / 0.35);
+}
+.dh5b-factions-tab .dh5b-kind { font-family: var(--dh5b-font-label); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dh5b-bright); }
+.dh5b-card-controls { display: flex; gap: 0.5rem; }
+.dh5b-card-controls a { color: var(--dh5b-dim); }
+.dh5b-card-controls a:hover { color: var(--dh5b-gold); text-shadow: 0 0 6px var(--dh5b-bright); }
+.dh5b-factions-tab .dh5b-motto { margin: -0.3rem 0 0; font-style: italic; font-size: 0.85rem; color: var(--dh5b-dim); }
+.dh5b-factions-tab .dh5b-subhead { display: block; margin-bottom: 0.25rem; font-family: var(--dh5b-font-label); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dh5b-dim); }
+.dh5b-card-details { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.4rem; border-top: 1px solid var(--dh5b-line-soft); }
+.dh5b-card-details .dh5b-description { font-size: 0.85rem; }
+.dh5b-card-details .dh5b-description > :first-child { margin-top: 0; }
+.dh5b-factions-tab textarea { width: 100%; min-height: 3.5rem; resize: vertical; font-family: inherit; font-size: 0.85rem; padding: 0.35rem 0.5rem; }
+.dh5b-factions-tab .dh5b-empty img { width: 64px; height: 64px; border: none; opacity: 0.35; margin: 1rem auto 0.5rem; display: block; }
+.dh5b-factions-tab .dh5b-empty .hint { font-style: normal; font-size: 0.8rem; max-width: 26rem; margin: 0.4rem auto; }
+.dh5b-tab-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--dh5b-dim);
+  border-top: 1px solid var(--dh5b-line-soft);
+}
+.dh5b-tab-footer > span { flex: 1; }
+.dh5b-tab-footer a { cursor: pointer; white-space: nowrap; }
+
+/* ---------- rule dialog ---------- */
+.dh5b-dialog .dh5b-rule p { margin: 0 0 0.6rem; line-height: 1.4; }
+.dh5b-dialog .dh5b-rule table { width: 100%; border-collapse: collapse; margin: 0.4rem 0 0.8rem; background: transparent; border: none; font-size: 0.85rem; }
+.dh5b-dialog .dh5b-rule thead { background: transparent; color: var(--dh5b-dim); font-family: var(--dh5b-font-label); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.08em; text-shadow: none; }
+.dh5b-dialog .dh5b-rule th,
+.dh5b-dialog .dh5b-rule td { padding: 0.3rem 0.4rem; border-bottom: 1px solid var(--dh5b-line-soft); text-align: left; vertical-align: top; }
+.dh5b-dialog .dh5b-rule tr:nth-child(even) { background: transparent; }
+.dh5b-dialog .dh5b-rule td:first-child { font-family: var(--dh5b-font-title); font-weight: 700; width: 2rem; }
+.dh5b-dialog .dh5b-rule td:nth-child(2) { font-weight: 700; white-space: nowrap; }
+.dh5b-dialog .dh5b-rule tr.tone-pos td:nth-child(-n + 2) { color: var(--dh5b-pos); }
+.dh5b-dialog .dh5b-rule tr.tone-neg td:nth-child(-n + 2) { color: var(--dh5b-neg); }
+.dh5b-dialog .dh5b-rule .hint { color: var(--dh5b-dim); font-size: 0.8rem; }
+.dh5b-dialog .form-footer button { flex: 0 0 auto; margin: 0 auto; }

@@ -1,0 +1,60 @@
+<section class="tab {{tabs.factions.cssClass}} {{tabs.factions.id}} dh5b-factions-tab" data-tab="{{tabs.factions.id}}" data-group="{{tabs.factions.group}}">
+    <div class="dh5b-factions-list">
+        {{#each dh5b.entries as |entry|}}
+            <article class="dh5b-faction-card {{#if entry.expanded}}expanded{{/if}}" data-faction-id="{{entry.id}}" style="--dh5b-faction-color: {{entry.color}}">
+                <div class="dh5b-card-banner" {{#if entry.canOpen}}data-action="dh5bOpenFaction"{{/if}} data-tooltip="DH5B.Tab.OpenFaction">
+                    <img src="{{entry.img}}" alt="{{entry.name}}" />
+                </div>
+                <div class="dh5b-card-body">
+                    <header class="dh5b-card-header">
+                        <div class="dh5b-card-title">
+                            <h3>{{entry.name}}</h3>
+                            {{#if entry.kind}}<span class="dh5b-kind">{{entry.kind}}</span>{{/if}}
+                        </div>
+                        <div class="dh5b-card-controls">
+                            <a data-action="dh5bToggle" data-tooltip="{{#if entry.expanded}}DH5B.Tab.Collapse{{else}}DH5B.Tab.Expand{{/if}}"><i class="fa-solid {{#if entry.expanded}}fa-chevron-up{{else}}fa-chevron-down{{/if}}" inert></i></a>
+                            {{#if ../dh5b.isGM}}
+                                <a data-action="dh5bForget" data-tooltip="DH5B.Tab.Forget"><i class="fa-solid fa-xmark" inert></i></a>
+                            {{/if}}
+                        </div>
+                    </header>
+                    {{#if entry.motto}}<p class="dh5b-motto">“{{entry.motto}}”</p>{{/if}}
+
+                    {{#if ../dh5b.showReputation}}
+                        {{> dh5b-track track=entry.track}}
+                    {{/if}}
+
+                    {{#if entry.relations.length}}
+                        <div class="dh5b-relations">
+                            <span class="dh5b-subhead">{{localize 'DH5B.Relations.Title'}}</span>
+                            <div class="dh5b-relation-list">
+                                {{#each entry.relations as |chip|}}{{> dh5b-relation chip}}{{/each}}
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if entry.expanded}}
+                        <div class="dh5b-card-details">
+                            {{#if entry.description}}<div class="dh5b-description">{{{entry.description}}}</div>{{/if}}
+                            <label class="dh5b-subhead">{{localize 'DH5B.Tab.Notes'}}</label>
+                            <textarea name="{{entry.notesName}}" rows="3" placeholder="{{localize 'DH5B.Tab.NotesPlaceholder'}}" {{#unless ../dh5b.editable}}disabled{{/unless}}>{{entry.notes}}</textarea>
+                        </div>
+                    {{/if}}
+                </div>
+            </article>
+        {{else}}
+            <div class="dh5b-empty">
+                <img src="modules/daggerheart-core/assets/layout/banner-silhouette.svg" alt="" />
+                <p>{{localize 'DH5B.Tab.Empty'}}</p>
+                {{#if dh5b.isGM}}<p class="hint">{{localize 'DH5B.Tab.EmptyGM'}}</p>{{/if}}
+            </div>
+        {{/each}}
+    </div>
+    {{#if dh5b.showReputation}}
+        <footer class="dh5b-tab-footer">
+            <i class="fa-solid fa-circle-info" inert></i>
+            <span>{{localize 'DH5B.Reputation.Footer'}}</span>
+            <a data-action="dh5bRule"><i class="fa-solid fa-scroll" inert></i> {{localize 'DH5B.Reputation.RuleLink'}}</a>
+        </footer>
+    {{/if}}
+</section>

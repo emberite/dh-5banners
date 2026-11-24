@@ -1,0 +1,21 @@
+<header class="dh5b-sheet-header" style="--dh5b-faction-color: {{color}}">
+    <div class="dh5b-banner {{#if editable}}editable{{/if}}" {{#if editable}}data-action="editImage" data-tooltip="DH5B.Sheet.ChangeBanner"{{/if}}>
+        <img src="{{item.img}}" alt="{{item.name}}" />
+    </div>
+    <div class="dh5b-identity">
+        {{#if editable}}
+            <input class="dh5b-name" type="text" name="name" value="{{item.name}}" placeholder="{{localize 'DH5B.Sheet.Name'}}" />
+            <div class="dh5b-identity-row">
+                <input type="text" name="system.kind" value="{{system.kind}}" placeholder="{{localize 'DH5B.Sheet.KindPlaceholder'}}" data-tooltip="DH5B.Sheet.Kind" />
+                <label class="dh5b-color" data-tooltip="DH5B.Sheet.Color">
+                    {{formInput fields.color value=system.color}}
+                </label>
+            </div>
+            <input class="dh5b-motto-input" type="text" name="system.motto" value="{{system.motto}}" placeholder="{{localize 'DH5B.Sheet.MottoPlaceholder'}}" />
+        {{else}}
+            <h1 class="dh5b-name">{{item.name}}</h1>
+            {{#if system.kind}}<span class="dh5b-kind">{{system.kind}}</span>{{/if}}
+            {{#if system.motto}}<p class="dh5b-motto">“{{system.motto}}”</p>{{/if}}
+        {{/if}}
+    </div>
+</header>

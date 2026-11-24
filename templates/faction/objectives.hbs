@@ -1,0 +1,39 @@
+<section class="tab {{tab.cssClass}}" data-tab="objectives" data-group="primary">
+    <fieldset class="dh5b-section">
+        <legend>{{localize 'DH5B.Objectives.Title'}}</legend>
+        <p class="dh5b-hint">{{localize 'DH5B.Objectives.Hint'}}</p>
+        <ol class="dh5b-objectives">
+            {{#each objectives as |o|}}
+                <li class="dh5b-objective {{o.kind}} {{#if o.done}}done{{/if}} {{#if o.secret}}secret{{/if}}" data-objective-id="{{o.id}}">
+                    <div class="dh5b-objective-head">
+                        <span class="dh5b-objective-kind">{{o.kindLabel}}</span>
+                        {{#if ../editable}}
+                            <input type="text" data-obj-field="name" value="{{o.name}}" placeholder="{{localize 'DH5B.Objectives.NamePlaceholder'}}" />
+                            <label class="dh5b-steps" data-tooltip="DH5B.Objectives.Steps"><input type="number" min="1" max="12" data-obj-field="max" value="{{o.max}}" /></label>
+                            <a class="dh5b-icon" data-action="toggleSecret" data-tooltip="{{#if o.secret}}DH5B.Objectives.Secret{{else}}DH5B.Objectives.Public{{/if}}"><i class="fa-solid {{#if o.secret}}fa-eye-slash{{else}}fa-eye{{/if}}" inert></i></a>
+                            <a class="dh5b-icon" data-action="removeObjective" data-tooltip="DH5B.Objectives.Remove"><i class="fa-solid fa-trash" inert></i></a>
+                        {{else}}
+                            <span class="dh5b-objective-name">{{o.name}}</span>
+                        {{/if}}
+                    </div>
+                    <div class="dh5b-countdown">
+                        {{#if ../editable}}<a class="dh5b-icon" data-action="tickObjective" data-delta="1" data-tooltip="DH5B.Objectives.TickUp"><i class="fa-solid fa-rotate-left" inert></i></a>{{/if}}
+                        <div class="dh5b-countdown-pips">
+                            {{#each o.pips as |p|}}<span class="dh5b-cd-pip {{#if p.filled}}filled{{/if}}"></span>{{/each}}
+                        </div>
+                        <span class="dh5b-countdown-value" data-tooltip="DH5B.Objectives.Remaining">{{o.value}}</span>
+                        {{#if ../editable}}<a class="dh5b-icon advance" data-action="tickObjective" data-delta="-1" data-tooltip="DH5B.Objectives.TickDown"><i class="fa-solid fa-forward-step" inert></i></a>{{/if}}
+                    </div>
+                </li>
+            {{else}}
+                <li class="dh5b-empty small">{{localize 'DH5B.Objectives.None'}}</li>
+            {{/each}}
+        </ol>
+        {{#if editable}}
+            <div class="dh5b-add-row">
+                <button type="button" data-action="addObjective" data-kind="major" {{#unless canAddMajor}}disabled{{/unless}}><i class="fa-solid fa-crown" inert></i> {{localize 'DH5B.Objectives.AddMajor'}}</button>
+                <button type="button" data-action="addObjective" data-kind="minor" {{#unless canAddMinor}}disabled{{/unless}}><i class="fa-solid fa-plus" inert></i> {{localize 'DH5B.Objectives.AddMinor'}}</button>
+            </div>
+        {{/if}}
+    </fieldset>
+</section>

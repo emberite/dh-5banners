@@ -1,0 +1,25 @@
+<section class="tab {{tab.cssClass}}" data-tab="reputation" data-group="primary">
+    <fieldset class="dh5b-section">
+        <legend>{{localize 'DH5B.Sheet.KnownBy'}}</legend>
+        <p class="dh5b-hint">{{#if isGM}}{{localize 'DH5B.Sheet.KnownByHint'}}{{else}}{{localize 'DH5B.Sheet.KnownByHintPlayer'}}{{/if}}</p>
+        <ol class="dh5b-known-by">
+            {{#each knownBy as |k|}}
+                <li class="dh5b-known" data-actor-uuid="{{k.uuid}}">
+                    <img src="{{k.img}}" alt="" data-action="openActor" />
+                    <a class="dh5b-known-name" data-action="openActor">{{k.name}}</a>
+                    {{#if ../reputationOn}}{{> dh5b-track track=k.track}}{{/if}}
+                </li>
+            {{else}}
+                <li class="dh5b-empty small">{{localize 'DH5B.Sheet.KnownByNone'}}</li>
+            {{/each}}
+        </ol>
+        {{#if canIntroduce}}
+            <div class="dh5b-add-row">
+                <button type="button" data-action="introduceParty"><i class="fa-solid fa-flag" inert></i> {{localize 'DH5B.Sheet.IntroduceAll'}}</button>
+            </div>
+        {{/if}}
+    </fieldset>
+    {{#if reputationOn}}
+        <p class="dh5b-hint center"><a data-action="dh5bRule"><i class="fa-solid fa-scroll" inert></i> {{localize 'DH5B.Reputation.RuleLink'}}</a></p>
+    {{/if}}
+</section>

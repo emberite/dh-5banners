@@ -1,0 +1,40 @@
+<section class="tab {{tab.cssClass}}" data-tab="relations" data-group="primary">
+    <fieldset class="dh5b-section">
+        <legend>{{localize 'DH5B.Relations.Title'}}</legend>
+        <p class="dh5b-hint">{{localize 'DH5B.Relations.Hint'}}{{#if (and editable mirror)}} {{localize 'DH5B.Relations.MirrorHint'}}{{/if}}</p>
+        <ol class="dh5b-relation-rows">
+            {{#each relations as |rel|}}
+                <li class="dh5b-relation-row tone-{{rel.tone}} {{#if rel.unknown}}unknown{{/if}}" data-relation-id="{{rel.id}}">
+                    <img src="{{rel.img}}" alt="" data-action="openFaction" style="--dh5b-chip-color: {{rel.color}}" />
+                    <a class="dh5b-relation-name" data-action="openFaction">{{rel.name}}</a>
+                    {{#if ../editable}}
+                        <select data-rel-field="value">
+                            {{#each rel.choices as |c|}}<option value="{{c.value}}" {{#if c.selected}}selected{{/if}}>{{c.label}}</option>{{/each}}
+                        </select>
+                        <input type="text" data-rel-field="note" value="{{rel.note}}" placeholder="{{localize 'DH5B.Relations.NotePlaceholder'}}" />
+                        <a class="dh5b-icon" data-action="removeRelation" data-tooltip="DH5B.Relations.Remove"><i class="fa-solid fa-trash" inert></i></a>
+                    {{else}}
+                        <span class="dh5b-relation-badge">{{rel.signed}} {{rel.label}}</span>
+                        <span class="dh5b-relation-note">{{rel.note}}</span>
+                    {{/if}}
+                </li>
+            {{else}}
+                <li class="dh5b-empty small">{{localize 'DH5B.Relations.None'}}</li>
+            {{/each}}
+        </ol>
+        {{#if editable}}
+            <div class="dh5b-add-row">
+                {{#if addable.length}}
+                    <select data-add-relation>
+                        <option value="">{{localize 'DH5B.Relations.Add'}}</option>
+                        {{#each addable as |f|}}<option value="{{f.id}}">{{f.name}}</option>{{/each}}
+                    </select>
+                {{/if}}
+                <span class="dh5b-hint"><i class="fa-solid fa-hand-pointer" inert></i> {{localize 'DH5B.Relations.DropHint'}}</span>
+            </div>
+        {{/if}}
+    </fieldset>
+    <div class="dh5b-scale">
+        {{#each ratingChoices as |c|}}<span>{{c.label}}</span>{{/each}}
+    </div>
+</section>
