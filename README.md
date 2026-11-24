@@ -2,7 +2,7 @@
 
 A Foundry VTT module for running the **Five Banners Burning** campaign frame in [Daggerheart](https://www.daggerheart.com). The GM creates the factions of the campaign and their relationships, and hands each faction to the characters as they meet it. Every character sheet gets a **Factions** tab that shows the factions the character knows, how those factions feel about each other and, with the homebrew reputation rule, where the character stands with each of them. The module also puts every sheet and token ring in the Five Banners Burning style of the Daggerheart Core Rulebook module.
 
-![The Factions tab on a character sheet, showing the five nations of Althas with reputation tracks and relationships](docs/screenshots/01-factions-tab.webp)
+![The Factions tab on a character sheet, showing the five nations of Althas with reputation tracks and relationships](docs/screenshots/01-factions-tab-v2.webp)
 
 ## Requirements
 
@@ -39,7 +39,7 @@ Factions are a new item type. Create one from the Items sidebar (**Create Item �
 
 | | | |
 |---|---|---|
-| ![Faction overview](docs/screenshots/05-overview.webp) | ![Faction relationships](docs/screenshots/02-relationships.webp) | ![Objective countdowns](docs/screenshots/03-objectives.webp) |
+| ![Faction overview](docs/screenshots/05-overview-v2.webp) | ![Faction relationships](docs/screenshots/02-relationships-v2.webp) | ![Objective countdowns](docs/screenshots/03-objectives-v2.webp) |
 | **Overview:** banner, kind, motto, color, description, assets and problems. | **Relationships:** Nemeses (−3) to Close Allies (+3) toward every other faction, with a note. | **Objectives:** one major (10 steps) and up to two minor (4–6 steps), run on the system's countdowns. |
 
 The faction sheet has these tabs:
@@ -60,7 +60,7 @@ The faction stays a single world item: when you edit it, every sheet that shows 
 
 ### Reputation (homebrew)
 
-![The reputation rule](docs/screenshots/06-reputation-rule.webp)
+![The reputation rule](docs/screenshots/06-reputation-rule-v2.webp)
 
 Each character has a reputation with every faction they've met. It uses the same scale as the relationships between factions, and every character starts at **Neutral**:
 
