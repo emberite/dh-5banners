@@ -10,6 +10,16 @@ A Foundry VTT module for running the **Five Banners Burning** campaign frame in 
 - [**Daggerheart**](https://foundryborne.online/) system 2.12 or later
 - [**Daggerheart Core Rulebook**](https://www.foundryvtt.store/products/daggerheart-core) module (`daggerheart-core`): provides the Five Banners Burning sheet theme, token ring, banner art and layout assets this module uses. None of that is included here.
 
+### Conflicts
+
+Five Banners can't run alongside these modules, and they must be disabled:
+
+- [Hotpot: Beast Feast Cooking](https://github.com/emberite/dh-hotpot) (`dh-hotpot`)
+- `dh-weredragon`
+- `dh-horizon`
+
+If one of them is enabled, Five Banners stays inactive: no Factions tab, sheet theme or token ring. When the GM logs in, a prompt offers to disable the conflicting modules or Five Banners, and then reloads the world. Factions and reputations are kept either way.
+
 ## Installation
 
 In Foundry's **Add-on Modules → Install Module**, paste this manifest URL:

@@ -157,6 +157,16 @@
         "Name": "Mirror faction relationships",
         "Hint": "When you set how one faction feels about another, set the same rating the other way around."
       }
+    },
+    "Conflict": {
+      "Title": "Five Banners is inactive",
+      "Body": "Five Banners: Factions & Reputation can't run while these modules are enabled:",
+      "Hint": "Until one side is disabled, the Factions tab, the sheet theme and the token ring are off. Your factions and reputations are kept either way.",
+      "DisableOthers": "Disable {modules}",
+      "DisableSelf": "Disable Five Banners",
+      "Later": "Not now",
+      "Inactive": "Five Banners is inactive until you disable: {modules}.",
+      "Player": "Five Banners is inactive because these modules are enabled: {modules}. Ask your GM to disable them."
     }
   }
 }

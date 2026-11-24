@@ -7,6 +7,10 @@ import { checkRingAssets, registerThemeOverride, registerTokenRing } from './the
 import { introduce, forget, knownFactions, playerCharacters, registerCleanup, setScore } from './factions.mjs';
 import { preloadTemplates, showReputationRule } from './view.mjs';
 import { createAlthas } from './althas.mjs';
+import { activeConflicts, promptConflicts } from './conflicts.mjs';
+
+/** Conflicting modules found at init. While any is active, only the faction data type is registered. */
+let conflicts = [];
 
 /**
  * Load the stylesheet with a version query. Foundry links module CSS by bare path, and a caching
@@ -88,6 +92,7 @@ function rerenderSheets() {
 Hooks.once('init', () => {
     loadStyles();
     registerSettings();
+    conflicts = activeConflicts();
 
     CONFIG.Item.dataModels[FACTION_TYPE] = FactionData;
     CONFIG.Item.typeIcons ??= {};
@@ -97,6 +102,10 @@ Hooks.once('init', () => {
         makeDefault: true,
         label: 'DH5B.Sheet.Label'
     });
+    if (conflicts.length) {
+        console.error(`${MODULE_ID} | inactive: disable ${conflicts.map(m => m.id).join(', ')} to use Five Banners`);
+        return;
+    }
 
     registerThemeOverride();
     registerTokenRing();
@@ -124,6 +133,7 @@ Hooks.on('preCreateItem', (item, data) => {
 });
 
 Hooks.once('ready', () => {
+    if (conflicts.length) return promptConflicts(conflicts);
     checkRingAssets();
 });
 
@@ -149,7 +159,7 @@ export async function resetSettings() {
 
 /** GM-only "Five Banners" section in the Daggerheart sidebar menu. */
 Hooks.on('renderDaggerheartMenu', (app, html) => {
-    if (!game.user.isGM) return;
+    if (!game.user.isGM || conflicts.length) return;
     const root = html instanceof HTMLElement ? html : html[0];
     if (!root || root.querySelector('.dh5b-menu')) return;
     const anchor = root.querySelectorAll('fieldset');
