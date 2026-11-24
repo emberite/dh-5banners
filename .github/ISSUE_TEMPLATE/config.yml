@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to install and what Five Banners needs
+    url: https://emberite.github.io/#dh-5banners
+    about: Manifest URL, requirements and screenshots on the emberite website.
