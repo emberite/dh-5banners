@@ -58,6 +58,8 @@
 .application.dh5b .window-content { background: transparent; color: var(--dh5b-text); padding: 0.75rem 1rem 1rem; gap: 0.6rem; }
 .application.dh5b-faction-sheet .window-content { overflow: hidden; display: flex; flex-direction: column; }
 .application.dh5b-faction-sheet .window-content > .tab { flex: 1; min-height: 0; overflow-y: auto; padding-right: 0.25rem; }
+/* Foundry lays tabs out as flex columns; keep sections at their natural height so the tab scrolls instead of squeezing them. */
+.application.dh5b-faction-sheet .window-content > .tab > * { flex-shrink: 0; }
 
 /* ---------- shared pieces ---------- */
 .dh5b .dh5b-hint,
@@ -218,7 +220,10 @@
 .dh5b nav.sheet-tabs > a.active { color: var(--dh5b-gold); border-bottom: 2px solid var(--dh5b-accent); text-shadow: 0 0 8px hsl(from var(--dh5b-bright) h s l / 0.5); }
 
 .dh5b .dh5b-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-.dh5b prose-mirror { min-height: 5rem; }
+/* Editors grow with their text instead of clipping it; the tab itself scrolls. */
+.dh5b prose-mirror { height: auto; min-height: 5rem; }
+.dh5b prose-mirror.inactive .editor-content { position: static; height: auto; overflow: visible; }
+.dh5b prose-mirror.active { min-height: 12rem; }
 .dh5b prose-mirror .editor-content { color: var(--dh5b-text); }
 .dh5b .dh5b-prose { min-height: 1.5rem; }
 
