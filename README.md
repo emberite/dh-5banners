@@ -40,13 +40,13 @@ Factions are a new item type. Create one from the Items sidebar (**Create Item �
 | | | |
 |---|---|---|
 | ![Faction overview](docs/screenshots/05-overview.webp) | ![Faction relationships](docs/screenshots/02-relationships.webp) | ![Objective countdowns](docs/screenshots/03-objectives.webp) |
-| **Overview:** banner, kind, motto, color, description, assets and problems. | **Relationships:** Nemeses (−3) to Close Allies (+3) toward every other faction, with a note. | **Objectives:** one major (10 steps) and up to two minor (4–6 steps) countdowns. |
+| **Overview:** banner, kind, motto, color, description, assets and problems. | **Relationships:** Nemeses (−3) to Close Allies (+3) toward every other faction, with a note. | **Objectives:** one major (10 steps) and up to two minor (4–6 steps), run on the system's countdowns. |
 
 The faction sheet has these tabs:
 
-- **Overview:** click the banner to change the image. The color is used behind the banner and on the sheets.
+- **Overview:** click the banner to change the image. The faction's color fills the banner in the banner's own shape: the shape is traced from the image's transparency, so the five nations' swallowtail, notched, crenellated, shield and pointed banners each keep their outline, and so does your own banner art if it has a transparent background. Images without transparency get a simple pennant.
 - **Relationships:** pick a faction from the list or drop one on the sheet, then set the rating. With *Mirror faction relationships* on (the default), the other faction gets the same rating back.
-- **Objectives:** the campaign frame's objective countdowns. Tick a countdown down as the faction makes progress, or back up when the party sets it back. Objectives are hidden from players until you click the eye.
+- **Objectives:** the campaign frame's objective countdowns, run on the Daggerheart system's own countdowns. Plan an objective (name, major or minor, number of steps), then click **Start countdown**: it appears in the Countdowns tracker as a narrative countdown named after the faction and the objective, with the faction's banner. Tick it there like any other countdown; the faction sheet shows its progress live. Objectives are hidden from players until you click the eye, which also shows or hides the running countdown. Removing an objective removes its countdown too.
 - **Reputation:** every character who has met the faction, with their reputation. Drop a character or the party here, or use **Introduce to all player characters**.
 - **GM Notes:** only the GM sees this tab.
 

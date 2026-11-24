@@ -2,8 +2,8 @@
     <div class="dh5b-factions-list">
         {{#each dh5b.entries as |entry|}}
             <article class="dh5b-faction-card {{#if entry.expanded}}expanded{{/if}}" data-faction-id="{{entry.id}}" style="--dh5b-faction-color: {{entry.color}}">
-                <div class="dh5b-card-banner" {{#if entry.canOpen}}data-action="dh5bOpenFaction"{{/if}} data-tooltip="DH5B.Tab.OpenFaction">
-                    <img src="{{entry.img}}" alt="{{entry.name}}" />
+                <div class="dh5b-card-banner dh5b-shape-pending" data-dh5b-banner {{#if entry.canOpen}}data-action="dh5bOpenFaction"{{/if}} data-tooltip="DH5B.Tab.OpenFaction">
+                    <div class="dh5b-banner-fill"><img src="{{entry.img}}" alt="{{entry.name}}" /></div>
                 </div>
                 <div class="dh5b-card-body">
                     <header class="dh5b-card-header">

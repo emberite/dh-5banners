@@ -8,6 +8,7 @@ import { introduce, forget, knownFactions, playerCharacters, registerCleanup, se
 import { preloadTemplates, showReputationRule } from './view.mjs';
 import { createAlthas } from './althas.mjs';
 import { activeConflicts, promptConflicts } from './conflicts.mjs';
+import { countdownSettingId } from './countdowns.mjs';
 
 /** Conflicting modules found at init. While any is active, only the faction data type is registered. */
 let conflicts = [];
@@ -135,6 +136,14 @@ Hooks.on('preCreateItem', (item, data) => {
 Hooks.once('ready', () => {
     if (conflicts.length) return promptConflicts(conflicts);
     checkRingAssets();
+});
+
+/** Objective progress lives in the system's countdowns: keep open faction sheets in step with the tracker. */
+Hooks.on('updateSetting', setting => {
+    if (conflicts.length || setting.key !== countdownSettingId()) return;
+    for (const app of foundry.applications.instances.values()) {
+        if (app.rendered && app.document?.type === FACTION_TYPE) app.render({ parts: ['objectives'] });
+    }
 });
 
 /**

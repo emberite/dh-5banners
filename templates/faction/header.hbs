@@ -1,6 +1,6 @@
 <header class="dh5b-sheet-header" style="--dh5b-faction-color: {{color}}">
-    <div class="dh5b-banner {{#if editable}}editable{{/if}}" {{#if editable}}data-action="editImage" data-tooltip="DH5B.Sheet.ChangeBanner"{{/if}}>
-        <img src="{{item.img}}" alt="{{item.name}}" />
+    <div class="dh5b-banner dh5b-shape-pending {{#if editable}}editable{{/if}}" data-dh5b-banner {{#if editable}}data-action="editImage" data-tooltip="DH5B.Sheet.ChangeBanner"{{/if}}>
+        <div class="dh5b-banner-fill"><img src="{{item.img}}" alt="{{item.name}}" /></div>
     </div>
     <div class="dh5b-identity">
         {{#if editable}}

@@ -1,4 +1,6 @@
 import { FACTION_TYPE, MODULE_ID, OBJECTIVE_LIMITS, OBJECTIVE_STEPS, clamp, scoreAfterClick, withRelation, withoutRelation } from './rules.mjs';
+import { shapeBanners } from './banner-shape.mjs';
+import { createCountdown, deleteCountdown, getCountdown, openCountdownEditor, updateCountdown } from './countdowns.mjs';
 import { charactersFor, charactersKnowing, factionFlags, introduce, isFaction, playerCharacters, setScore } from './factions.mjs';
 import { ratingChoices, relationChips, showReputationRule, trackContext } from './view.mjs';
 
@@ -20,7 +22,8 @@ export class FactionSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             removeRelation: FactionSheet.#onRemoveRelation,
             addObjective: FactionSheet.#onAddObjective,
             removeObjective: FactionSheet.#onRemoveObjective,
-            tickObjective: FactionSheet.#onTickObjective,
+            startCountdown: FactionSheet.#onStartCountdown,
+            openCountdowns: () => openCountdownEditor(),
             toggleSecret: FactionSheet.#onToggleSecret,
             introduceParty: FactionSheet.#onIntroduceParty,
             openActor: FactionSheet.#onOpenActor,
@@ -70,6 +73,7 @@ export class FactionSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     /** Drag & drop works on the whole sheet (factions → relationships, characters → introduce). */
     _onRender(context, options) {
         super._onRender(context, options);
+        shapeBanners(this.element);
         if (options.isFirstRender) {
             new foundry.applications.ux.DragDrop.implementation({
                 dropSelector: null,
@@ -126,18 +130,31 @@ export class FactionSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             .sort((a, b) => a.name.localeCompare(b.name));
         context.mirror = game.settings.get(MODULE_ID, 'mirrorRelations');
 
-        // Objectives (secret ones are GM-only)
-        context.objectives = system.objectives
-            .filter(o => isGM || !o.secret)
-            .map(o => ({
-                ...o,
-                done: o.value <= 0,
-                pips: Array.from({ length: o.max }, (_, i) => ({ filled: i < o.max - o.value })),
-                kindLabel: game.i18n.localize(`DH5B.Objectives.${o.kind}`)
-            }))
-            .sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'major' ? -1 : 1));
+        // Objectives: definitions here, progress in the system's countdowns once started.
+        // Before a countdown starts, hidden objectives are GM-only; after, the countdown's own visibility decides.
+        context.objectives = [];
         const counts = { major: 0, minor: 0 };
-        for (const o of system.objectives) counts[o.kind]++;
+        for (const o of system.objectives) {
+            const countdown = getCountdown(o.countdownId);
+            const started = !!countdown;
+            const start = started ? countdown.progress.start : o.max;
+            const current = started ? countdown.progress.current : o.max;
+            const done = started && current <= 0;
+            const secret = started ? countdown.hidden : o.secret;
+            if (!done) counts[o.kind]++;
+            if (!isGM && (started ? !countdown.visible : o.secret)) continue;
+            context.objectives.push({
+                ...o,
+                secret,
+                started,
+                done,
+                start,
+                current,
+                pips: Array.from({ length: start }, (_, i) => ({ filled: started && i < start - current })),
+                kindLabel: game.i18n.localize(`DH5B.Objectives.${o.kind}`)
+            });
+        }
+        context.objectives.sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'major' ? -1 : 1));
         context.canAddMajor = counts.major < OBJECTIVE_LIMITS.major;
         context.canAddMinor = counts.minor < OBJECTIVE_LIMITS.minor;
 
@@ -196,63 +213,80 @@ export class FactionSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
     /* ---------- objectives ---------- */
 
+    #objective(target) {
+        const id = target.closest('[data-objective-id]')?.dataset.objectiveId;
+        return this.document.system.objectives.find(o => o.id === id) ?? null;
+    }
+
+    #objectiveName(o) {
+        return o.name || game.i18n.localize(`DH5B.Objectives.${o.kind}`);
+    }
+
     async #updateObjective(id, changes) {
         const objectives = this.document.system.objectives.map(o => (o.id === id ? { ...o, ...changes } : { ...o }));
-        for (const o of objectives) {
-            o.max = clamp(Math.round(Number(o.max) || 1), 1, 12);
-            o.value = clamp(Math.round(Number(o.value) || 0), 0, o.max);
-        }
+        for (const o of objectives) o.max = clamp(Math.round(Number(o.max) || 1), 1, 12);
         await this.document.update({ 'system.objectives': objectives });
     }
 
     async #onObjectiveChange(event) {
         const el = event.currentTarget;
-        const id = el.closest('[data-objective-id]')?.dataset.objectiveId;
-        if (!id) return;
+        const o = this.#objective(el);
+        if (!o) return;
         event.stopPropagation();
         const field = el.dataset.objField;
-        const current = this.document.system.objectives.find(o => o.id === id);
-        let value = el.value;
-        if (field === 'max') {
-            value = Number(value);
-            // Changing the length keeps the progress made so far.
-            const done = current.max - current.value;
-            return this.#updateObjective(id, { max: value, value: Math.max(0, value - done) });
+        await this.#updateObjective(o.id, { [field]: field === 'max' ? Number(el.value) : el.value });
+        // A running countdown follows the objective's name.
+        if (field === 'name' && getCountdown(o.countdownId)) {
+            await updateCountdown(o.countdownId, { name: `${this.document.name}: ${this.#objectiveName({ ...o, name: el.value })}` });
         }
-        await this.#updateObjective(id, { [field]: value });
     }
 
     static async #onAddObjective(event, target) {
         const kind = target.dataset.kind === 'major' ? 'major' : 'minor';
-        const steps = OBJECTIVE_STEPS[kind];
         const objectives = [
             ...this.document.system.objectives.map(o => ({ ...o })),
-            { id: foundry.utils.randomID(), name: '', kind, max: steps, value: steps, secret: true }
+            { id: foundry.utils.randomID(), name: '', kind, max: OBJECTIVE_STEPS[kind], secret: true, countdownId: '' }
         ];
         await this.document.update({ 'system.objectives': objectives });
     }
 
+    /** Removing an objective also removes its countdown from the tracker (after asking, if one is running). */
     static async #onRemoveObjective(event, target) {
-        const id = target.closest('[data-objective-id]')?.dataset.objectiveId;
-        await this.document.update({ 'system.objectives': this.document.system.objectives.filter(o => o.id !== id).map(o => ({ ...o })) });
+        const o = this.#objective(target);
+        if (!o) return;
+        const countdown = getCountdown(o.countdownId);
+        if (countdown) {
+            const ok = await foundry.applications.api.DialogV2.confirm({
+                window: { title: 'DH5B.Objectives.Remove' },
+                content: `<p>${game.i18n.format('DH5B.Objectives.RemoveConfirm', { name: this.#objectiveName(o) })}</p>`
+            });
+            if (!ok) return;
+            await deleteCountdown(o.countdownId);
+        }
+        await this.document.update({ 'system.objectives': this.document.system.objectives.filter(x => x.id !== o.id).map(x => ({ ...x })) });
     }
 
-    /** Advance (tick down) or set back (tick up) a countdown. */
-    static async #onTickObjective(event, target) {
-        const id = target.closest('[data-objective-id]')?.dataset.objectiveId;
-        const o = this.document.system.objectives.find(x => x.id === id);
-        if (!o) return;
-        const delta = Number(target.dataset.delta) || -1;
-        await this.#updateObjective(id, { value: o.value + delta });
-        if (o.value + delta === 0 && delta < 0) {
-            ui.notifications.info(game.i18n.format('DH5B.Objectives.Completed', { faction: this.document.name, name: o.name || game.i18n.localize(`DH5B.Objectives.${o.kind}`) }));
-        }
+    /** Start the objective as a narrative countdown in the system's Countdowns tracker. */
+    static async #onStartCountdown(event, target) {
+        if (!game.user.isGM) return;
+        const o = this.#objective(target);
+        if (!o || getCountdown(o.countdownId)) return;
+        const countdownId = await createCountdown({
+            name: `${this.document.name}: ${this.#objectiveName(o)}`,
+            img: this.document.img,
+            start: o.max,
+            hidden: o.secret
+        });
+        await this.#updateObjective(o.id, { countdownId });
+        ui.notifications.info(game.i18n.format('DH5B.Objectives.Started', { name: this.#objectiveName(o) }));
     }
 
     static async #onToggleSecret(event, target) {
-        const id = target.closest('[data-objective-id]')?.dataset.objectiveId;
-        const o = this.document.system.objectives.find(x => x.id === id);
-        if (o) await this.#updateObjective(id, { secret: !o.secret });
+        const o = this.#objective(target);
+        if (!o) return;
+        const countdown = getCountdown(o.countdownId);
+        if (countdown) await updateCountdown(o.countdownId, { hidden: !countdown.hidden });
+        else await this.#updateObjective(o.id, { secret: !o.secret });
     }
 
     /* ---------- reputation ---------- */

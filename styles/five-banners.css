@@ -111,6 +111,7 @@
 .dh5b-factions-tab textarea:focus { border-color: var(--dh5b-bright); box-shadow: 0 0 6px hsl(from var(--dh5b-bright) h s l / 0.4); outline: none; }
 
 .dh5b .dh5b-add-row button,
+.dh5b .dh5b-countdown .dh5b-start,
 .dh5b-dialog .form-footer button {
   display: inline-flex;
   align-items: center;
@@ -130,6 +131,7 @@
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 }
 .dh5b .dh5b-add-row button:hover:not(:disabled),
+.dh5b .dh5b-countdown .dh5b-start:hover,
 .dh5b-dialog .form-footer button:hover { background: linear-gradient(120deg, hsl(from var(--dh5b-accent) h s calc(l - 15)), var(--dh5b-accent)); color: var(--dh5b-white); }
 .dh5b .dh5b-add-row button:disabled { opacity: 0.4; }
 .dh5b .dh5b-icon { color: var(--dh5b-dim); cursor: pointer; padding: 0 0.2rem; }
@@ -138,20 +140,32 @@
 .dh5b .dh5b-add-row select { flex: 0 1 16rem; }
 .dh5b .dh5b-add-row .dh5b-hint { margin: 0; }
 
-/* Banner images: the Core Rulebook's nation banners are black line art on transparency, so every banner sits on its faction's color. */
+/* Banner images. Each banner is filled with its faction's color in its own shape: the shape is traced
+   from the image's transparency (scripts/banner-shape.mjs) and applied as a mask. Images without a
+   traceable shape use a generic pennant. The glowing outline sits on the wrapper, outside the mask. */
 .dh5b-banner,
 .dh5b-card-banner {
   --dh5b-faction-color-safe: var(--dh5b-faction-color, var(--dh5b-accent));
-  background:
-    radial-gradient(circle at 50% 30%, hsl(from var(--dh5b-faction-color-safe) h s calc(l + 25)), var(--dh5b-faction-color-safe) 70%),
-    var(--dh5b-faction-color-safe);
-  border: 1px solid var(--dh5b-gold);
-  box-shadow: 0 0 0 3px hsl(from var(--dh5b-deep) h s l / 0.9), 0 0 14px hsl(from var(--dh5b-faction-color-safe) h s l / 0.6);
-  clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
-  overflow: hidden;
+  position: relative;
+  filter:
+    drop-shadow(0 0 0.6px var(--dh5b-gold))
+    drop-shadow(0 0 0.6px var(--dh5b-gold))
+    drop-shadow(0 0 7px hsl(from var(--dh5b-faction-color-safe) h s l / 0.7));
 }
-.dh5b-banner img,
-.dh5b-card-banner img { width: 100%; height: 100%; object-fit: contain; border: none; }
+.dh5b-banner-fill {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at 50% 30%, hsl(from var(--dh5b-faction-color-safe) h s calc(l + 25)), var(--dh5b-faction-color-safe) 75%),
+    var(--dh5b-faction-color-safe);
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
+}
+.shaped > .dh5b-banner-fill {
+  clip-path: none;
+  mask: var(--dh5b-mask) center / contain no-repeat;
+}
+.dh5b-shape-pending > .dh5b-banner-fill { visibility: hidden; }
+.dh5b-banner-fill img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; border: none; }
 
 /* ---------- faction sheet: header ---------- */
 .dh5b .dh5b-sheet-header { display: flex; gap: 1rem; align-items: flex-start; }
@@ -247,7 +261,10 @@
 .dh5b .dh5b-cd-pip.filled { background: linear-gradient(90deg, var(--dh5b-accent), var(--dh5b-bright)); border-color: var(--dh5b-bright); box-shadow: 0 0 6px hsl(from var(--dh5b-bright) h s l / 0.6); }
 .dh5b .done .dh5b-cd-pip.filled { background: var(--dh5b-gold); border-color: var(--dh5b-gold); }
 .dh5b .dh5b-countdown-value { font-family: var(--dh5b-font-title); font-size: 1.3rem; font-weight: 700; color: var(--dh5b-gold); min-width: 1.6rem; text-align: center; }
-.dh5b .dh5b-icon.advance { color: var(--dh5b-bright); font-size: 1.05rem; }
+.dh5b .dh5b-countdown .dh5b-start { flex: 0 0 auto; padding: 0.2rem 0.7rem; font-size: 0.72rem; }
+.dh5b .dh5b-objective:not(.started) .dh5b-cd-pip { opacity: 0.5; border-style: dashed; }
+.dh5b .dh5b-objective-status { font-size: 0.75rem; font-style: italic; color: var(--dh5b-dim); }
+.dh5b .dh5b-objective-done { margin: 0.4rem 0 0; font-size: 0.78rem; color: var(--dh5b-gold); }
 
 /* ---------- faction sheet: known by ---------- */
 .dh5b .dh5b-known-by { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }

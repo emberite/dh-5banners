@@ -10,6 +10,7 @@ import {
     marksPerRank,
     setScore
 } from './factions.mjs';
+import { shapeBanners } from './banner-shape.mjs';
 import { TEMPLATES, knownIdsOf, relationChips, showReputationRule, trackContext } from './view.mjs';
 
 const TAB_ID = 'factions';
@@ -56,6 +57,12 @@ export function registerCharacterTab() {
         context = await preparePart.call(this, partId, context, options);
         if (partId === TAB_ID) context.dh5b = await prepareTab(this);
         return context;
+    };
+
+    const onRender = Character.prototype._onRender;
+    Character.prototype._onRender = async function (context, options) {
+        await onRender.call(this, context, options);
+        shapeBanners(this.element.querySelector('.dh5b-factions-tab'));
     };
 
     const onDrop = Character.prototype._onDrop;

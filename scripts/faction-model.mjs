@@ -44,8 +44,9 @@ export class FactionData extends foundry.abstract.TypeDataModel {
                     name: new fields.StringField({ required: true, blank: true, initial: '' }),
                     kind: new fields.StringField({ required: true, choices: ['major', 'minor'], initial: 'minor' }),
                     max: new fields.NumberField({ required: true, integer: true, min: 1, max: 12, initial: 4 }),
-                    value: new fields.NumberField({ required: true, integer: true, min: 0, max: 12, initial: 4 }),
-                    secret: new fields.BooleanField({ initial: true })
+                    secret: new fields.BooleanField({ initial: true }),
+                    // The system countdown this objective started (progress lives there).
+                    countdownId: new fields.StringField({ required: true, blank: true, initial: '' })
                 })
             )
         };
