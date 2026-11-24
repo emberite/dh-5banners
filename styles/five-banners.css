@@ -335,6 +335,9 @@
 
 /* ---------- character sheet: Factions tab ---------- */
 .dh5b-factions-tab.active { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+/* The Core Rulebook sheets pad every tab 2rem at the bottom; the footer already closes this one off. */
+.application.sheet.daggerheart section.tab.dh5b-factions-tab,
+.application.sheet.daggerheart.dh-c-style section.tab.dh5b-factions-tab { padding-bottom: 6px; }
 .dh5b-factions-tab .dh5b-factions-list { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0.75rem 0.75rem; }
 .dh5b-faction-card {
   position: relative;
@@ -379,12 +382,14 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.9rem 0.5rem;
+  padding: 0.25rem 0.9rem;
   font-size: 0.75rem;
+  line-height: 1.2;
+  white-space: nowrap;
   color: var(--dh5b-dim);
   border-top: 1px solid var(--dh5b-line-soft);
 }
-.dh5b-tab-footer > span { flex: 1; }
+.dh5b-tab-footer > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .dh5b-tab-footer a { cursor: pointer; white-space: nowrap; }
 
 /* ---------- rule dialog ---------- */
